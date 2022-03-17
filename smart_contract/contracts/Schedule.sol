@@ -12,7 +12,7 @@ contract Schedule {
     string public name;
     string public date;
     Event[] events;
-    event updatedSchedule(string eventName, uint256 startTime, uint256 endTime);
+    event updatedSchedule(Event[] events);
 
     constructor(string memory myName, string memory myDate) {
         name = myName;
@@ -21,7 +21,7 @@ contract Schedule {
     function addEvent(uint256 order, uint256 startTime, uint256 endTime, string memory nameOfEvent) public {
         numOfEvents++;
         events.push(Event(order, startTime, endTime, nameOfEvent));
-        emit updatedSchedule(nameOfEvent, startTime, endTime);
+        emit updatedSchedule(events);
     }
     function getAllEvents() public view returns (Event[] memory){
         return events;

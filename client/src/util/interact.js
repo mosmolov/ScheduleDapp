@@ -1,9 +1,10 @@
-import { contractAddress, abi } from "constants.js";
+import { contractAddress, contractABI } from "./constants.js";
 require("dotenv").config();
+const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
-export const scheduleContract = new web3.eth.Contract(abi, contractAddress);
+export const scheduleContract = new web3.eth.Contract(contractABI, contractAddress);
 
 export const loadCurrentEvents = async () => {
   const events = await scheduleContract.methods.getAllEvents().call();
@@ -107,7 +108,7 @@ export const updateSchedule = async (
     to: contractAddress, // Required except during contract publications.
     from: address, // must match user's active address.
     data: scheduleContract.methods
-      .updateSchedule(order, startTime, endTime, nameOfEvent)
+      .addEvent(order, startTime, endTime, nameOfEvent)
       .encodeABI(),
   };
 
