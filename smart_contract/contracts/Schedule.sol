@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.7.3;
-
+pragma experimental ABIEncoderV2;
 contract Schedule {
     struct Event {
         uint256 order;
