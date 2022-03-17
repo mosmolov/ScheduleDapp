@@ -8,14 +8,10 @@ contract Schedule {
         uint256 endTime;
         string name;
     }
-    struct mySchedule {
-        string date;
-        mapping(uint256 => Event) myEvents;
-    }
+    uint256 numOfEvents;
     string public name;
     string public date;
-    mySchedule public schedule;
-
+    Event[] events;
     event updatedSchedule(string eventName, uint256 startTime, uint256 endTime);
 
     constructor(string memory myName, string memory myDate) {
@@ -23,8 +19,11 @@ contract Schedule {
         date = myDate;
     }
     function addEvent(uint256 order, uint256 startTime, uint256 endTime, string memory nameOfEvent) public {
-        Event memory newEvent = Event(order, startTime, endTime, nameOfEvent);
-        schedule.myEvents[(newEvent.order) - 1] = newEvent;
-        emit updatedSchedule(newEvent.name, newEvent.startTime, newEvent.endTime);
+        numOfEvents++;
+        events.push(Event(order, startTime, endTime, nameOfEvent));
+        emit updatedSchedule(nameOfEvent, startTime, endTime);
+    }
+    function getAllEvents() public view returns (Event[] memory){
+        return events;
     }
 }
