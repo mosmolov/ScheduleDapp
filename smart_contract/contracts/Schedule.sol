@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.7.3;
-
+pragma experimental ABIEncoderV2;
 contract Schedule {
     struct Event {
         uint256 order;
@@ -8,23 +8,22 @@ contract Schedule {
         uint256 endTime;
         string name;
     }
-    struct mySchedule {
-        string date;
-        mapping(uint256 => Event) myEvents;
-    }
+    uint256 numOfEvents;
     string public name;
     string public date;
-    mySchedule public schedule;
-
-    event updatedSchedule(string eventName, uint256 startTime, uint256 endTime);
+    Event[] events;
+    event updatedSchedule(Event[] events);
 
     constructor(string memory myName, string memory myDate) {
         name = myName;
         date = myDate;
     }
     function addEvent(uint256 order, uint256 startTime, uint256 endTime, string memory nameOfEvent) public {
-        Event memory newEvent = Event(order, startTime, endTime, nameOfEvent);
-        schedule.myEvents[(newEvent.order) - 1] = newEvent;
-        emit updatedSchedule(newEvent.name, newEvent.startTime, newEvent.endTime);
+        numOfEvents++;
+        events.push(Event(order, startTime, endTime, nameOfEvent));
+        emit updatedSchedule(events);
+    }
+    function getAllEvents() public view returns (Event[] memory){
+        return events;
     }
 }
