@@ -1,9 +1,9 @@
-import { contractAddress, contractABI } from "./constants.js";
 require("dotenv").config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
-
+const contractABI = require("../Schedule.json").abi;
+const contractAddress = "0x1E369E43BfbaAD7eCe118875c96fb4A5a608Cb86";
 export const scheduleContract = new web3.eth.Contract(contractABI, contractAddress);
 
 export const loadCurrentEvents = async () => {

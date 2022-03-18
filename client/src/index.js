@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Schedule from './Schedule';
+
 ReactDOM.render(
   <React.StrictMode>
-    <Schedule />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
