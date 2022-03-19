@@ -6,9 +6,13 @@ const contractABI = require("../Schedule.json").abi;
 const contractAddress = "0x1E369E43BfbaAD7eCe118875c96fb4A5a608Cb86";
 export const scheduleContract = new web3.eth.Contract(contractABI, contractAddress);
 
-export const loadCurrentEvents = async () => {
-  const events = await scheduleContract.methods.getAllEvents().call();
-  return events;
+export const loadCurrentSchedule = async () => {
+  const schedule = [];
+  schedule.push(await scheduleContract.methods.name().call());
+  schedule.push(await scheduleContract.methods.date().call());
+  schedule.push(await scheduleContract.methods.getAllEvents().call());
+  console.log(schedule);
+  return schedule;
 };
 
 export const connectWallet = async () => {

@@ -1,26 +1,26 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {
-    scheduleContract,
-    connectWallet,
-    updateSchedule,
-    loadCurrentEvents,
-    getCurrentWalletConnected,
-  } from "./util/interact.js";
-  
-  const Schedule = () => {
-      //state variables
+  scheduleContract,
+  connectWallet,
+  updateSchedule,
+  loadCurrentSchedule,
+  getCurrentWalletConnected,
+} from "./util/interact.js";
+
+const Schedule = () => {
+  //state variables
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState("");
-  const [schedule, setSchedule] = useState("No connection to the network."); //default message
+  const [schedule, setSchedule] = useState([]);
   const [newEventName, setNewEventName] = useState("");
   const [newEventStartTime, setNewEventStartTime] = useState();
   const [newEventEndTime, setNewEventEndTime] = useState();
   const [newEventOrder, setNewEventOrder] = useState();
-//called only once
-useEffect(async () => {
-    const events = await loadCurrentEvents();
-    setSchedule(events);
+  //called only once
+  useEffect(async () => {
+    const schedule = await loadCurrentSchedule();
+    setSchedule(schedule);
     addSmartContractListener();
 
     const { address, status } = await getCurrentWalletConnected();
@@ -76,9 +76,15 @@ useEffect(async () => {
   };
 
   const onUpdatePressed = async () => {
-      const { status } = await updateSchedule(walletAddress, newEventOrder, newEventStartTime, newEventEndTime, newEventName);
-      setStatus(status);
-  }
+    const { status } = await updateSchedule(
+      walletAddress,
+      newEventOrder,
+      newEventStartTime,
+      newEventEndTime,
+      newEventName
+    );
+    setStatus(status);
+  };
   //the UI of our component
   return (
     <div id="container">
@@ -92,10 +98,26 @@ useEffect(async () => {
           <span>Connect Wallet</span>
         )}
       </button>
-
-      <h2 style={{ paddingTop: "50px" }}>Current Schedule:</h2>
-      <p>{schedule}</p>
-
+      <div>
+        {walletAddress.length > 0 ? (
+          <div>
+            <h1>{schedule[0]}</h1>
+            <h2>{schedule[1]}</h2>
+          </div>
+        ) : (
+          <span>Schedule Empty</span>
+        )}
+      </div>
+      <h2>Current Schedule:</h2>
+      <div>
+        {walletAddress.length > 0 ? (
+          <div>
+            {schedule[2].map(event => <div> <p>{event[1]}-{event[2]} : {event[3]}</p></div>)}
+          </div>
+        ) : (
+          <span>Schedule Empty</span>
+        )}
+      </div>
       <h2 style={{ paddingTop: "18px" }}>Add Event:</h2>
 
       <div>
@@ -131,6 +153,6 @@ useEffect(async () => {
       </div>
     </div>
   );
-  };
+};
 
-  export default Schedule;
+export default Schedule;
