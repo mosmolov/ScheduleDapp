@@ -105,17 +105,24 @@ const Schedule = () => {
             <h2>{schedule[1]}</h2>
           </div>
         ) : (
-          <span>Schedule Empty</span>
+          <span>Connect Wallet to Import Schedule</span>
         )}
       </div>
       <h2>Current Schedule:</h2>
       <div>
         {walletAddress.length > 0 ? (
           <div>
-            {schedule[2].map(event => <div> <p>{event[1]}-{event[2]} : {event[3]}</p></div>)}
+            {schedule[2].map((event) => (
+              <div>
+                {" "}
+                <p>
+                  {event[1]}-{event[2]} : {event[3]}
+                </p>
+              </div>
+            ))}
           </div>
         ) : (
-          <span>Schedule Empty</span>
+          <span></span>
         )}
       </div>
       <h2 style={{ paddingTop: "18px" }}>Add Event:</h2>
