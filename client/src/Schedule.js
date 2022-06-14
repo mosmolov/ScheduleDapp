@@ -18,17 +18,20 @@ const Schedule = () => {
   const [newEventEndTime, setNewEventEndTime] = useState();
   const [newEventOrder, setNewEventOrder] = useState();
   //called only once
-  useEffect(async () => {
-    const schedule = await loadCurrentSchedule();
-    setSchedule(schedule);
-    addSmartContractListener();
-
-    const { address, status } = await getCurrentWalletConnected();
-
-    setWallet(address);
-    setStatus(status);
-
-    addWalletListener();
+  useEffect(() => {
+    async function fetchData() {
+      const schedule = await loadCurrentSchedule();
+      setSchedule(schedule);
+      addSmartContractListener();
+  
+      const { address, status } = await getCurrentWalletConnected();
+  
+      setWallet(address);
+      setStatus(status);
+  
+      addWalletListener();
+    }
+    fetchData();
   }, []);
   function addSmartContractListener() {
     scheduleContract.events.updatedSchedule({}, (error, data) => {
